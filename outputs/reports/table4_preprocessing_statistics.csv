@@ -1,0 +1,16 @@
+Split,Disease Class,Total Images,Processed,Failed,Success Rate (%)
+Train,Bud Root Dropping,1500,1500,0,100.0
+Train,Bud Rot,1500,1500,0,100.0
+Train,Gray Leaf Spot,1500,1500,0,100.0
+Train,Leaf Rot,1500,1500,0,100.0
+Train,Stem Bleeding,1500,1500,0,100.0
+Val,Bud Root Dropping,77,77,0,100.0
+Val,Bud Rot,70,70,0,100.0
+Val,Gray Leaf Spot,320,320,0,100.0
+Val,Leaf Rot,250,250,0,100.0
+Val,Stem Bleeding,150,150,0,100.0
+Test,Bud Root Dropping,78,78,0,100.0
+Test,Bud Rot,71,71,0,100.0
+Test,Gray Leaf Spot,321,321,0,100.0
+Test,Leaf Rot,252,252,0,100.0
+Test,Stem Bleeding,152,152,0,100.0

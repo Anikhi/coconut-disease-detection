@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Detection Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .consensus-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .consensus-box h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .consensus-box.healthy {
+            background: linear-gradient(135deg, #10ac84 0%, #0caa77 100%);
+        }
+
+        .agreement-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .prediction-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .prediction-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .confidence-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .confidence-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .treatments-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #10ac84 0%, #0caa77 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 172, 132, 0.3);
+        }
+
+        .treatments-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 172, 132, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .preventive-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #10ac84;
+        }
+
+        .preventive-card h5 {
+            color: #10ac84;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .preventive-card p {
+            color: #666;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-custom {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .consensus-box h2 {
+                font-size: 1.5rem;
+            }
+
+            .treatments-link {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🥥 Coconut Disease Detection</h1>
+            <p>Analysis Results</p>
+        </div>
+
+        <!-- Main Result Card -->
+        <div class="card">
+            <!-- Consensus Box -->
+            {% if result.consensus.is_healthy %}
+                <div class="consensus-box healthy">
+                    <h2>✓ Healthy Plant Detected</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 0;">No Disease Found</p>
+                    <div class="agreement-badge">Confidence: {{ "%.2f"|format(result.consensus.avg_confidence) }}%</div>
+                </div>
+            {% else %}
+                <div class="consensus-box">
+                    <h2>{{ result.consensus.majority_disease }}</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 0;">Disease Detected</p>
+                    <div class="agreement-badge">
+                        {% if result.consensus.all_agree %}
+                            ✓ All {{ result.consensus.agreement_count }}/{{ result.model_info|length }} Models Agree
+                        {% else %}
+                            {{ result.consensus.agreement_count }}/{{ result.model_info|length }} Models Agree
+                        {% endif %}
+                    </div>
+                    <div class="agreement-badge">Confidence: {{ "%.2f"|format(result.consensus.avg_confidence) }}%</div>
+                </div>
+            {% endif %}
+
+            <!-- Model Predictions -->
+            <div style="padding: 20px;">
+                <h5 style="color: #667eea; margin-bottom: 15px; font-weight: 600;">Model Predictions</h5>
+
+                {% for model_name, prediction in result.predictions.items() %}
+                <div class="prediction-card">
+                    <h4>{{ model_name }}</h4>
+                    <p style="color: #333; margin-bottom: 8px;">
+                        <strong>Disease:</strong> {{ prediction.disease }}
+                    </p>
+                    <p style="color: #666; margin-bottom: 0;">
+                        <strong>Confidence:</strong> {{ "%.2f"|format(prediction.confidence) }}%
+                    </p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: {{ prediction.confidence }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Treatments Button (Only if Diseased) -->
+                {% if not result.consensus.is_healthy and result.treatment_count > 0 %}
+                <div style="text-align: center; margin-top: 25px;">
+                    <a href="/treatments" class="treatments-link">
+                        📋 View {{ result.treatment_count }} Treatment Recommendations
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Preventive Care (If Healthy) -->
+                {% if result.consensus.is_healthy %}
+                <div style="margin-top: 25px;">
+                    <h5 style="color: #10ac84; margin-bottom: 15px; font-weight: 600;">Preventive Care Tips</h5>
+
+                    <div class="preventive-card">
+                        <h5>💧 Proper Watering</h5>
+                        <p>Water coconut palms regularly, ensuring good drainage to prevent root diseases.</p>
+                    </div>
+
+                    <div class="preventive-card">
+                        <h5>🌱 Soil Health</h5>
+                        <p>Maintain soil fertility with organic matter and appropriate fertilization schedule.</p>
+                    </div>
+
+                    <div class="preventive-card">
+                        <h5>✂️ Sanitation</h5>
+                        <p>Remove dead leaves and debris promptly to prevent disease spread.</p>
+                    </div>
+
+                    <div class="preventive-card">
+                        <h5>🔍 Monitoring</h5>
+                        <p>Regularly inspect plants for early signs of disease or pest infestation.</p>
+                    </div>
+
+                    <div class="preventive-card">
+                        <h5>🌾 Spacing</h5>
+                        <p>Ensure proper plant spacing for adequate air circulation and sunlight.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="/dashboard" class="btn-custom btn-upload">↻ Upload Another Image</a>
+            <a href="/logout" class="btn-custom btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

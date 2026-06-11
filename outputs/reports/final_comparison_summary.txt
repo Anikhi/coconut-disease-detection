@@ -1,0 +1,30 @@
+
+COMPREHENSIVE MODEL COMPARISON SUMMARY
+
+Total Models Trained: 3
+
+Best Performing Model: MobileNetV2
+- Accuracy:  99.31%
+- Precision: 99.31%
+- Recall:    99.31%
+- F1-Score:  99.31%
+
+All Models Performance:
+
+MobileNetV2:
+  Accuracy: 99.31%
+  F1-Score: 99.31%
+
+Custom CNN:
+  Accuracy: 99.31%
+  F1-Score: 99.31%
+
+DenseNet121:
+  Accuracy: 99.20%
+  F1-Score: 99.20%
+
+Generated Outputs for Paper:
+- Table 6: Model Performance Comparison
+- Table 7: Comparison with State-of-the-Art Literature
+- Figure 7: Comprehensive Model Comparison Visualization
+

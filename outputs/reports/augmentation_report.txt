@@ -1,0 +1,23 @@
+TABLE 3: DATA AUGMENTATION STATISTICS
+====================================================================================================
+
+    Disease Class  Original Count  Augmented Added  Final Count Increase (%)
+Bud Root Dropping             359             1141         1500        317.8
+          Bud Rot             329             1171         1500        355.9
+   Gray Leaf Spot            1494                6         1500          0.4
+         Leaf Rot            1171              329         1500         28.1
+    Stem Bleeding             704              796         1500        113.1
+            TOTAL            4057             3443         7500         84.9
+
+====================================================================================================
+
+Augmentation Techniques Applied:
+  - Rotation: ±25 degrees
+  - Horizontal/Vertical Flipping
+  - Brightness/Contrast Adjustment: ±20%
+  - Zoom/Scale: 0.8-1.2×
+  - Gaussian Blur and Noise
+  - Small Translation/Shifting: ±10%
+
+Target Count: 1500 images per class
+Library: Albumentations (v1.3+)

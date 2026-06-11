@@ -1,0 +1,19 @@
+{
+  "total_images": 11596,
+  "num_classes": 5,
+  "class_distribution": {
+    "Bud Root Dropping": 1028,
+    "Bud Rot": 940,
+    "Gray Leaf Spot": 4270,
+    "Leaf Rot": 3346,
+    "Stem Bleeding": 2012
+  },
+  "imbalance_ratio": 4.542553191489362,
+  "classes": [
+    "Bud Root Dropping",
+    "Bud Rot",
+    "Gray Leaf Spot",
+    "Leaf Rot",
+    "Stem Bleeding"
+  ]
+}

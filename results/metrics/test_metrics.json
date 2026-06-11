@@ -1,0 +1,51 @@
+{
+  "accuracy": 0.9919908466819222,
+  "precision": 0.9922073102851134,
+  "recall": 0.9919908466819222,
+  "f1_score": 0.9920015589568811,
+  "classification_report": {
+    "Bud Root Dropping": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 78.0
+    },
+    "Bud Rot": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 71.0
+    },
+    "Gray Leaf Spot": {
+      "precision": 1.0,
+      "recall": 0.9781931464174455,
+      "f1-score": 0.988976377952756,
+      "support": 321.0
+    },
+    "Leaf Rot": {
+      "precision": 0.972972972972973,
+      "recall": 1.0,
+      "f1-score": 0.9863013698630136,
+      "support": 252.0
+    },
+    "Stem Bleeding": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 152.0
+    },
+    "accuracy": 0.9919908466819222,
+    "macro avg": {
+      "precision": 0.9945945945945945,
+      "recall": 0.9956386292834891,
+      "f1-score": 0.9950555495631539,
+      "support": 874.0
+    },
+    "weighted avg": {
+      "precision": 0.9922073102851134,
+      "recall": 0.9919908466819222,
+      "f1-score": 0.9920015589568811,
+      "support": 874.0
+    }
+  }
+}

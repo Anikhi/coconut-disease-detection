@@ -1,0 +1,109 @@
+{
+  "target_size": {
+    "width": 224,
+    "height": 224
+  },
+  "preprocessing_steps": [
+    "Read image using OpenCV",
+    "Convert BGR to RGB color space",
+    "Resize to 224\u00d7224 using LANCZOS4 interpolation",
+    "Save as JPEG with 95% quality"
+  ],
+  "statistics": {
+    "train": {
+      "classes": {
+        "Bud Root Dropping": {
+          "total": 1500,
+          "processed": 1500,
+          "failed": 0
+        },
+        "Bud Rot": {
+          "total": 1500,
+          "processed": 1500,
+          "failed": 0
+        },
+        "Gray Leaf Spot": {
+          "total": 1500,
+          "processed": 1500,
+          "failed": 0
+        },
+        "Leaf Rot": {
+          "total": 1500,
+          "processed": 1500,
+          "failed": 0
+        },
+        "Stem Bleeding": {
+          "total": 1500,
+          "processed": 1500,
+          "failed": 0
+        }
+      },
+      "total_processed": 7500,
+      "total_failed": 0
+    },
+    "val": {
+      "classes": {
+        "Bud Root Dropping": {
+          "total": 77,
+          "processed": 77,
+          "failed": 0
+        },
+        "Bud Rot": {
+          "total": 70,
+          "processed": 70,
+          "failed": 0
+        },
+        "Gray Leaf Spot": {
+          "total": 320,
+          "processed": 320,
+          "failed": 0
+        },
+        "Leaf Rot": {
+          "total": 250,
+          "processed": 250,
+          "failed": 0
+        },
+        "Stem Bleeding": {
+          "total": 150,
+          "processed": 150,
+          "failed": 0
+        }
+      },
+      "total_processed": 867,
+      "total_failed": 0
+    },
+    "test": {
+      "classes": {
+        "Bud Root Dropping": {
+          "total": 78,
+          "processed": 78,
+          "failed": 0
+        },
+        "Bud Rot": {
+          "total": 71,
+          "processed": 71,
+          "failed": 0
+        },
+        "Gray Leaf Spot": {
+          "total": 321,
+          "processed": 321,
+          "failed": 0
+        },
+        "Leaf Rot": {
+          "total": 252,
+          "processed": 252,
+          "failed": 0
+        },
+        "Stem Bleeding": {
+          "total": 152,
+          "processed": 152,
+          "failed": 0
+        }
+      },
+      "total_processed": 874,
+      "total_failed": 0
+    }
+  },
+  "total_images": 9241,
+  "failed_images": 0
+}

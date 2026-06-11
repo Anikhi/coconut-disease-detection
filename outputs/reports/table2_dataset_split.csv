@@ -1,0 +1,7 @@
+Disease Class,Total,Train,Train %,Validation,Val %,Test,Test %
+Bud Root Dropping,514,359,69.8,77,15.0,78,15.2
+Bud Rot,470,329,70.0,70,14.9,71,15.1
+Gray Leaf Spot,2135,1494,70.0,320,15.0,321,15.0
+Leaf Rot,1673,1171,70.0,250,14.9,252,15.1
+Stem Bleeding,1006,704,70.0,150,14.9,152,15.1
+TOTAL,5798,4057,70.0,867,15.0,874,15.0

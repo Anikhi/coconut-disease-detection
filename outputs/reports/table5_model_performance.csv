@@ -1,0 +1,7 @@
+Disease Class,Precision (%),Recall (%),F1-Score (%),Support
+Bud Root Dropping,100.00,100.00,100.00,78
+Bud Rot,100.00,100.00,100.00,71
+Gray Leaf Spot,100.00,97.82,98.90,321
+Leaf Rot,97.30,100.00,98.63,252
+Stem Bleeding,100.00,100.00,100.00,152
+OVERALL (Weighted Avg),99.22,99.20,99.20,874

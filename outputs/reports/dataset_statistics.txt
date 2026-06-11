@@ -1,0 +1,18 @@
+TABLE 1: CLASS DISTRIBUTION IN COCONUT DISEASE DATASET
+======================================================================
+
+    Disease Class  Image Count Percentage (%)
+   Gray Leaf Spot         4270           36.8
+         Leaf Rot         3346           28.9
+    Stem Bleeding         2012           17.4
+Bud Root Dropping         1028            8.9
+          Bud Rot          940            8.1
+            TOTAL        11596          100.0
+
+======================================================================
+
+IMBALANCE ANALYSIS:
+  - Largest class: 4270 images
+  - Smallest class: 940 images
+  - Imbalance ratio: 4.54:1
+  - Recommendation: Augmentation needed for classes < 2319 images

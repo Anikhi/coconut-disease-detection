@@ -1,0 +1,10 @@
+Study,Accuracy,Year
+Our Work (Custom CNN),99.31,2026
+Our Work (MobileNetV2),99.31,2026
+Our Work (DenseNet121),99.20,2026
+Paper 5 (DenseNet-121),99.00,2023
+Paper 3 (Inception V3),98.82,2024
+Paper 6 (ResNet50),98.70,2023
+Paper 1 (Hybrid CNN-ViT),98.36,2024
+Paper 10 (SVM),97.30,2021
+Paper 7 (ResNext50),91.77,2023

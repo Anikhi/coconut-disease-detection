@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treatment Recommendations - {{ disease }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .disease-title {
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .disease-title h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .disease-title p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        .treatment-list {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .treatment-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .treatment-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .treatment-link {
+            display: block;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .treatment-link:hover {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .rank-and-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .treatment-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .efficacy-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back:hover {
+            background: #f0f0f0;
+            color: #667eea;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .btn-home {
+            background: #10ac84;
+            color: white;
+        }
+
+        .btn-home:hover {
+            background: #0caa77;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .treatment-count {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .disease-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .treatment-name {
+                font-size: 1rem;
+            }
+
+            .rank-badge {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Treatment Recommendations</h1>
+            <p>Select a treatment to view full details</p>
+        </div>
+
+        <!-- Disease Title -->
+        <div class="disease-title">
+            <h2>{{ disease }}</h2>
+            <p>{{ treatments|length }} Available Treatments</p>
+        </div>
+
+        <!-- Treatment Count -->
+        <div class="treatment-count">
+            Showing {{ treatments|length }} research-validated treatment protocols
+        </div>
+
+        <!-- Treatments List -->
+        <div class="treatment-list">
+            {% for treatment in treatments %}
+            <div class="treatment-item">
+                <a href="/treatment-detail/{{ treatment.rank }}" class="treatment-link">
+                    <div class="rank-and-name">
+                        <div class="rank-badge">{{ treatment.rank }}</div>
+                        <div class="treatment-name">{{ treatment.name }}</div>
+                    </div>
+                    {% if treatment.efficacy_percentage > 0 %}
+                    <div>
+                        <span class="efficacy-badge">{{ treatment.efficacy_percentage }}% Effective</span>
+                    </div>
+                    {% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="/results" class="btn-custom btn-back">← Back to Results</a>
+            <a href="/dashboard" class="btn-custom btn-home">🏠 Home</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

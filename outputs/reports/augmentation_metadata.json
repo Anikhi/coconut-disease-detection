@@ -1,0 +1,43 @@
+{
+  "target_count_per_class": 1500,
+  "augmentation_techniques": [
+    "Rotation (\u00b125\u00b0)",
+    "Horizontal Flip",
+    "Vertical Flip",
+    "Brightness/Contrast (\u00b120%)",
+    "Zoom/Scale (0.8-1.2\u00d7)",
+    "Gaussian Blur",
+    "Gaussian Noise",
+    "Translation/Shift (\u00b110%)"
+  ],
+  "class_statistics": {
+    "Bud Root Dropping": {
+      "original": 359,
+      "augmented": 1141,
+      "final": 1500
+    },
+    "Bud Rot": {
+      "original": 329,
+      "augmented": 1171,
+      "final": 1500
+    },
+    "Gray Leaf Spot": {
+      "original": 1494,
+      "augmented": 6,
+      "final": 1500
+    },
+    "Leaf Rot": {
+      "original": 1171,
+      "augmented": 329,
+      "final": 1500
+    },
+    "Stem Bleeding": {
+      "original": 704,
+      "augmented": 796,
+      "final": 1500
+    }
+  },
+  "total_original": 4057,
+  "total_augmented": 3443,
+  "total_final": 7500
+}

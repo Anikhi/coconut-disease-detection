@@ -1,0 +1,202 @@
+{
+  "Bud Rot": {
+    "disease_info": {
+      "pathogen": "Phytophthora palmivora",
+      "symptoms": "Rotting of unopened spindle, foul smell, collapse of growing point",
+      "severity": "High - Can kill entire tree if untreated"
+    },
+    "organic_treatments": [
+      {
+        "name": "Trichoderma viride Application",
+        "method": "Apply Trichoderma viride paste (50g/tree) in the crown after removing infected tissue",
+        "frequency": "Once immediately, repeat after 15 days",
+        "dosage": "50g Trichoderma powder mixed with 200ml water per tree",
+        "cost_per_tree": 25.0,
+        "effectiveness": "85-90%",
+        "application_time": "Early morning or late evening"
+      },
+      {
+        "name": "Neem Oil + Garlic Extract Spray",
+        "method": "Spray 3% neem oil + 5% garlic extract on crown and surrounding area",
+        "frequency": "Weekly for 4 weeks",
+        "dosage": "30ml neem oil + 50ml garlic extract per liter of water",
+        "cost_per_tree": 18.0,
+        "effectiveness": "70-75%",
+        "application_time": "Early morning"
+      },
+      {
+        "name": "Bordeaux Mixture (Organic Copper)",
+        "method": "1% Bordeaux mixture spray on crown after disease removal",
+        "frequency": "Bi-weekly for 2 months",
+        "dosage": "10g/liter of water",
+        "cost_per_tree": 15.0,
+        "effectiveness": "80-85%",
+        "application_time": "Cloudy day or evening"
+      }
+    ],
+    "preventive_measures": [
+      "Ensure proper drainage around tree base",
+      "Avoid water stagnation in crown",
+      "Remove and burn infected tissues immediately",
+      "Apply Trichoderma every 3 months as preventive"
+    ],
+    "chemical_alternative": {
+      "name": "Metalaxyl + Mancozeb",
+      "cost_per_tree": 45.0,
+      "effectiveness": "90-95%",
+      "side_effects": "Soil contamination, harmful to beneficial microbes"
+    }
+  },
+  "Bud Root Dropping": {
+    "disease_info": {
+      "pathogen": "Combination of pests and pathogens",
+      "symptoms": "Premature button shedding, poor nut setting, yellowing of leaves",
+      "severity": "Medium - Reduces yield significantly"
+    },
+    "organic_treatments": [
+      {
+        "name": "Panchagavya Foliar Spray",
+        "method": "Spray 3% Panchagavya solution on entire canopy",
+        "frequency": "Bi-weekly for 3 months",
+        "dosage": "30ml Panchagavya per liter of water",
+        "cost_per_tree": 20.0,
+        "effectiveness": "75-80%",
+        "application_time": "Early morning"
+      },
+      {
+        "name": "Vermicompost Tea Application",
+        "method": "Apply vermicompost tea at tree base + foliar spray",
+        "frequency": "Monthly",
+        "dosage": "10kg vermicompost tea per tree",
+        "cost_per_tree": 35.0,
+        "effectiveness": "70-75%",
+        "application_time": "Evening"
+      }
+    ],
+    "preventive_measures": [
+      "Regular monitoring for pest infestation",
+      "Balanced organic nutrition",
+      "Avoid water stress during flowering"
+    ],
+    "chemical_alternative": {
+      "name": "Imidacloprid + Foliar NPK",
+      "cost_per_tree": 55.0,
+      "effectiveness": "85-90%",
+      "side_effects": "Kills pollinators, groundwater contamination"
+    }
+  },
+  "Gray Leaf Spot": {
+    "disease_info": {
+      "pathogen": "Cercospora/Pestalotiopsis species",
+      "symptoms": "Gray-brown spots on leaves, yellowing, premature leaf drop",
+      "severity": "Low-Medium - Mostly aesthetic"
+    },
+    "organic_treatments": [
+      {
+        "name": "Baking Soda + Neem Oil Spray",
+        "method": "Spray mixture on affected leaves",
+        "frequency": "Weekly for 6 weeks",
+        "dosage": "5g baking soda + 5ml neem oil per liter",
+        "cost_per_tree": 12.0,
+        "effectiveness": "80-85%",
+        "application_time": "Evening"
+      },
+      {
+        "name": "Pseudomonas fluorescens Spray",
+        "method": "Biocontrol agent spray",
+        "frequency": "Every 10 days",
+        "dosage": "10g powder per liter",
+        "cost_per_tree": 15.0,
+        "effectiveness": "85-90%",
+        "application_time": "Evening"
+      }
+    ],
+    "preventive_measures": [
+      "Remove infected leaves",
+      "Ensure good air circulation",
+      "Avoid overhead irrigation"
+    ],
+    "chemical_alternative": {
+      "name": "Mancozeb or Copper oxychloride",
+      "cost_per_tree": 22.0,
+      "effectiveness": "90-95%",
+      "side_effects": "Leaf burn, soil copper accumulation"
+    }
+  },
+  "Leaf Rot": {
+    "disease_info": {
+      "pathogen": "Colletotrichum/Pythium species",
+      "symptoms": "Water-soaked lesions, rapid leaf decay",
+      "severity": "Medium-High"
+    },
+    "organic_treatments": [
+      {
+        "name": "Trichoderma + Pseudomonas",
+        "method": "Combined biocontrol spray",
+        "frequency": "Weekly",
+        "dosage": "25g Trichoderma + 10g Pseudomonas per tree",
+        "cost_per_tree": 28.0,
+        "effectiveness": "85-90%",
+        "application_time": "Morning"
+      },
+      {
+        "name": "Cinnamon Oil + Clove Oil",
+        "method": "Essential oil spray",
+        "frequency": "Twice weekly",
+        "dosage": "10ml cinnamon + 5ml clove per liter",
+        "cost_per_tree": 32.0,
+        "effectiveness": "75-80%",
+        "application_time": "Evening"
+      }
+    ],
+    "preventive_measures": [
+      "Improve drainage",
+      "Prune overcrowded fronds",
+      "Remove infected leaves"
+    ],
+    "chemical_alternative": {
+      "name": "Carbendazim + Mancozeb",
+      "cost_per_tree": 38.0,
+      "effectiveness": "92-95%",
+      "side_effects": "Systemic chemical, affects soil microbiome"
+    }
+  },
+  "Stem Bleeding": {
+    "disease_info": {
+      "pathogen": "Thielaviopsis paradoxa",
+      "symptoms": "Dark reddish-brown exudation from stem",
+      "severity": "Very High - Can kill tree"
+    },
+    "organic_treatments": [
+      {
+        "name": "Surgical Removal + Trichoderma",
+        "method": "Remove infected tissue, apply paste",
+        "frequency": "One-time treatment",
+        "dosage": "100g Trichoderma paste",
+        "cost_per_tree": 45.0,
+        "effectiveness": "75-85%",
+        "application_time": "Dry weather"
+      },
+      {
+        "name": "Neem Cake + Trichoderma Soil",
+        "method": "Heavy soil treatment",
+        "frequency": "Monthly for 6 months",
+        "dosage": "5kg neem cake + 250g Trichoderma",
+        "cost_per_tree": 60.0,
+        "effectiveness": "70-75%",
+        "application_time": "After irrigation"
+      }
+    ],
+    "preventive_measures": [
+      "Avoid mechanical injury",
+      "Good drainage is critical",
+      "Regular trunk inspection"
+    ],
+    "chemical_alternative": {
+      "name": "Tridemorph + Carbendazim",
+      "cost_per_tree": 85.0,
+      "effectiveness": "85-90%",
+      "side_effects": "High toxicity"
+    }
+  }
+}

@@ -1,0 +1,508 @@
+"""
+Beautiful Dashboard Page
+=========================
+Matching the uploaded design with gradient background
+
+Author: [Nikhitha A]
+Date: February 2026
+"""
+
+from pathlib import Path
+
+print("\nCreating beautiful dashboard page...")
+
+app_dir = Path("web_app_integrated")
+templates_dir = app_dir / "templates"
+templates_dir.mkdir(parents=True, exist_ok=True)
+
+dashboard_html = '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Disease Detection</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a0827d 0%, #d4a89f 50%, #e8c4a0 100%);
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+        
+        .navbar-left h3 {
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        
+        .navbar-left .welcome {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #2c2c2c;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #4a4a4a;
+            margin-bottom: 25px;
+        }
+        
+        .models-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+        }
+        
+        /* Divider */
+        .divider {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 40px 0;
+        }
+        
+        /* Upload Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            color: #2c2c2c;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+        
+        /* Upload Options - Initially Visible */
+        .upload-options {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .option-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            padding: 50px 40px;
+            border-radius: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+            background: rgba(255, 255, 255, 0.35);
+        }
+        
+        .option-icon {
+            font-size: 6em;
+            margin-bottom: 20px;
+        }
+        
+        .option-card h3 {
+            font-size: 1.8em;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .option-card p {
+            color: #4a4a4a;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+        
+        .option-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+        
+        .or-divider {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Preview Section - Initially Hidden */
+        .preview-section {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .preview-section.active {
+            display: block;
+        }
+        
+        .image-preview {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
+        }
+        
+        .reupload-btn {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: #2c2c2c;
+            padding: 18px 50px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reupload-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #2c2c2c;
+            font-size: 1.3em;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #27ae60;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .upload-options {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .or-divider {
+                transform: rotate(90deg);
+            }
+            
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <h3> Coconut Disease Detection</h3>
+            <span class="welcome">Welcome, <strong>{{ username }}</strong></span>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Multi-Model Disease Detection</h1>
+            <p>Compare predictions from multiple AI models simultaneously</p>
+            <div class="models-badge"> AI Models Active</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Section Title -->
+        <h2 class="section-title">Capture or Upload Coconut Leaf Image</h2>
+        
+        <!-- Upload Options (Initially Visible) -->
+        <div id="uploadOptions" class="upload-options">
+            <div class="option-card">
+                <div class="option-icon">📷</div>
+                <h3>Take Photo</h3>
+                <p>Use your device camera</p>
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+                <button class="option-btn" onclick="document.getElementById('cameraInput').click()">
+                    Open Camera
+                </button>
+            </div>
+            
+            <div class="or-divider">OR</div>
+            
+            <div class="option-card">
+                <div class="option-icon">📁</div>
+                <h3>Upload Image</h3>
+                <p>Choose from device gallery</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                <button class="option-btn" onclick="document.getElementById('fileInput').click()">
+                    Browse Files
+                </button>
+            </div>
+        </div>
+        
+        <!-- Preview Section (Initially Hidden) -->
+        <div id="previewSection" class="preview-section">
+            <div class="image-preview">
+                <img id="previewImage" class="preview-image" alt="Selected image">
+            </div>
+            <div class="preview-actions">
+                <button class="analyze-btn" onclick="analyzeImage()">
+                    Analyze Disease
+                </button>
+                <button class="reupload-btn" onclick="reuploadImage()">
+                    Re-upload Image
+                </button>
+            </div>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loadingSection" class="hidden">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Analyzing with all models...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedFile = null;
+        
+        // Handle camera input
+        document.getElementById('cameraInput').addEventListener('change', function(e) {
+            handleImageSelection(e.target.files[0]);
+        });
+        
+        // Handle file input
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            handleImageSelection(e.target.files[0]);
+        });
+        
+        function handleImageSelection(file) {
+            if (file) {
+                selectedFile = file;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Show preview, hide upload options
+                    document.getElementById('previewImage').src = event.target.result;
+                    document.getElementById('uploadOptions').classList.add('hidden');
+                    document.getElementById('previewSection').classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function reuploadImage() {
+            // Hide preview, show upload options
+            selectedFile = null;
+            document.getElementById('previewSection').classList.remove('active');
+            document.getElementById('uploadOptions').classList.remove('hidden');
+            document.getElementById('cameraInput').value = '';
+            document.getElementById('fileInput').value = '';
+        }
+        
+        function analyzeImage() {
+            if (!selectedFile) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('previewSection').classList.add('hidden');
+            document.getElementById('loadingSection').classList.remove('hidden');
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to results page
+                    window.location.href = '/results';
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('previewSection').classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('previewSection').classList.remove('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
+'''
+
+with open(templates_dir / "dashboard.html", "w", encoding='utf-8') as f:
+    f.write(dashboard_html)
+
+print("✓ Created beautiful dashboard.html")
+
+print("\n" + "="*60)
+print("BEAUTIFUL DASHBOARD CREATED!")
+print("="*60)
+print("\nFeatures:")
+print("   Gradient background matching login page")
+print("   Glass-morphism cards")
+print("   Camera & file upload options")
+print("   Image preview replaces upload cards")
+print("   Analyze & Re-upload buttons")
+print("   Smooth transitions")
+print("   Loading state")
+print("   Redirects to results page")
+print("\nBehavior:")
+print("  1. Shows camera/upload cards")
+print("  2. User selects image")
+print("  3. Cards disappear, image preview shows")
+print("  4. Analyze button → results page")
+print("  5. Re-upload button → back to cards")
+print("="*60)

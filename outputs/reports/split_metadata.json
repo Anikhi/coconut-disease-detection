@@ -1,0 +1,45 @@
+{
+  "split_ratio": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "split_statistics": {
+    "Bud Root Dropping": {
+      "total": 514,
+      "train": 359,
+      "val": 77,
+      "test": 78
+    },
+    "Bud Rot": {
+      "total": 470,
+      "train": 329,
+      "val": 70,
+      "test": 71
+    },
+    "Gray Leaf Spot": {
+      "total": 2135,
+      "train": 1494,
+      "val": 320,
+      "test": 321
+    },
+    "Leaf Rot": {
+      "total": 1673,
+      "train": 1171,
+      "val": 250,
+      "test": 252
+    },
+    "Stem Bleeding": {
+      "total": 1006,
+      "train": 704,
+      "val": 150,
+      "test": 152
+    }
+  },
+  "random_seed": 42,
+  "total_counts": {
+    "train": 4057,
+    "val": 867,
+    "test": 874
+  }
+}

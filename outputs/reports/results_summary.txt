@@ -1,0 +1,55 @@
+
+RESULTS SUMMARY FOR RESEARCH PAPER
+==================================
+
+Model: DenseNet121 with Transfer Learning
+
+Overall Performance:
+- Test Accuracy:  99.20%
+- Precision:      99.22%
+- Recall:         99.20%
+- F1-Score:       99.20%
+
+Per-Class Performance:
+
+Bud Root Dropping:
+  Precision: 100.00%
+  Recall:    100.00%
+  F1-Score:  100.00%
+  Support:   78 samples
+
+Bud Rot:
+  Precision: 100.00%
+  Recall:    100.00%
+  F1-Score:  100.00%
+  Support:   71 samples
+
+Gray Leaf Spot:
+  Precision: 100.00%
+  Recall:    97.82%
+  F1-Score:  98.90%
+  Support:   321 samples
+
+Leaf Rot:
+  Precision: 97.30%
+  Recall:    100.00%
+  F1-Score:  98.63%
+  Support:   252 samples
+
+Stem Bleeding:
+  Precision: 100.00%
+  Recall:    100.00%
+  F1-Score:  100.00%
+  Support:   152 samples
+
+Key Findings:
+1. The model achieved excellent overall accuracy of 99.20%
+2. Performance is consistent across all disease classes
+3. Both precision and recall are above 99%, indicating balanced performance
+4. Results validate the effectiveness of transfer learning with DenseNet121
+
+For Paper:
+- Reference Table 5 for per-class metrics
+- Reference Figure 4 for training history
+- Reference Figure 5 for confusion matrix  
+- Reference Figure 6 for performance summary

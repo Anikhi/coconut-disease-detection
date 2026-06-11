@@ -1,0 +1,12 @@
+IMAGE PROPERTIES ANALYSIS
+============================================================
+
+Average Height: 1024.00
+Average Width: 768.00
+Min Height: 1024.00
+Max Height: 1024.00
+Min Width: 768.00
+Max Width: 768.00
+Average Size (KB): 209.91
+Total Classes: 5.00
+Total Images: 11596.00
