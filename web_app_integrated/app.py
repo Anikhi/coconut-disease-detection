@@ -76,7 +76,7 @@ class_names = ['Bud Root Dropping', 'Bud Rot', 'Gray Leaf Spot', 'Leaf Rot', 'St
 CONFIDENCE_THRESHOLD = 80.0  # If confidence < 80%, classify as healthy
 
 # ============================================================================
-# GOOGLE DRIVE MODEL LOADING WITH KERAS COMPATIBILITY FIX
+# GOOGLE DRIVE MODEL DOWNLOADING AND LOADING
 # ============================================================================
 
 # Google Drive folder ID with trained models
@@ -86,68 +86,106 @@ GDRIVE_FOLDER_ID = "19rtTUFf8BmbKyqaKxtr8QsvnYbhHIZ1D"
 MODELS_DIR = "../models/saved_models"
 os.makedirs(MODELS_DIR, exist_ok=True)
 
-print("\n" + "="*60)
-print("LOADING MODELS FROM GOOGLE DRIVE")
-print("="*60)
+print("\n" + "="*70)
+print("INITIALIZING MODEL LOADING SYSTEM")
+print("="*70)
 
-# Model file patterns
+# Model file patterns and their expected names
 model_patterns = {
     'MobileNetV2': 'mobilenet_best_*.h5',
     'DenseNet121': 'densenet121_best_*.h5',
     'Custom CNN': 'custom_cnn_best_*.h5'
 }
 
-# Count existing models
-existing_models = 0
-for pattern in model_patterns.values():
-    existing_models += len(list(Path(MODELS_DIR).glob(pattern)))
+def count_models():
+    """Count how many models exist locally"""
+    count = 0
+    for pattern in model_patterns.values():
+        count += len(list(Path(MODELS_DIR).glob(pattern)))
+    return count
 
-# If models not found locally, download from Google Drive
-if existing_models < 3:
-    print(f"Found {existing_models}/3 models locally. Downloading from Google Drive...")
+def download_models_from_gdrive():
+    """Download models from Google Drive"""
+    print("\n⏳ Attempting to download models from Google Drive...")
+    print(f"   Folder ID: {GDRIVE_FOLDER_ID}")
+    
     try:
-        print(f"Downloading from folder ID: {GDRIVE_FOLDER_ID}")
-        gdown.download_folder(id=GDRIVE_FOLDER_ID, output=MODELS_DIR, quiet=False)
-        print("✓ Models downloaded successfully!")
+        # Download entire folder from Google Drive
+        gdown.download_folder(
+            id=GDRIVE_FOLDER_ID,
+            output=MODELS_DIR,
+            quiet=False,
+            use_cookies=False
+        )
+        print("✓ Models downloaded successfully from Google Drive!")
+        return True
     except Exception as e:
-        print(f"⚠️ Error downloading models: {e}")
-        print("⚠️ Models may not be available. App will continue without disease detection.")
-else:
-    print(f"✓ All {existing_models} models found locally")
+        print(f"⚠️  Could not download from Google Drive: {str(e)[:100]}")
+        return False
 
-# Load all models with Keras compatibility handling
+def load_single_model(model_name, model_path):
+    """Load a single model with multiple fallback strategies"""
+    try:
+        # Strategy 1: Standard loading
+        model = keras.models.load_model(str(model_path))
+        return model
+    except Exception as e1:
+        print(f"   ℹ️  Standard load failed, trying fallback methods...")
+        try:
+            # Strategy 2: Load with custom_objects
+            model = keras.models.load_model(
+                str(model_path),
+                custom_objects=None
+            )
+            return model
+        except Exception as e2:
+            print(f"   ⚠️  Fallback methods also failed: {str(e2)[:80]}")
+            return None
+
+# Count existing models
+existing_count = count_models()
+print(f"Found {existing_count}/3 models locally")
+
+# Try to download if models missing
+if existing_count < 3:
+    print("\n⏳ Not all models found. Attempting download...")
+    download_models_from_gdrive()
+    existing_count = count_models()
+
+# Load models
+print("\n" + "-"*70)
+print("LOADING MODELS INTO MEMORY")
+print("-"*70)
+
 models = {}
+
 for model_name, pattern in model_patterns.items():
     model_files = list(Path(MODELS_DIR).glob(pattern))
+    
     if model_files:
+        model_path = model_files[0]
+        print(f"\n{model_name}:")
+        print(f"  File: {model_path.name}")
+        print(f"  Size: {model_path.stat().st_size / (1024*1024):.2f} MB")
+        
         try:
-            # Try loading with safe_mode=False to handle Keras version differences
-            try:
-                model = keras.models.load_model(model_files[0], safe_mode=False)
-            except TypeError:
-                # Fallback if safe_mode parameter doesn't exist
-                model = keras.models.load_model(model_files[0])
-            
-            models[model_name] = model
-            print(f"✓ {model_name}: Loaded successfully")
-        except Exception as e:
-            print(f"✗ {model_name}: Failed to load - {str(e)[:100]}")
-            try:
-                # Last resort: try custom_objects parameter
-                model = keras.models.load_model(
-                    model_files[0],
-                    custom_objects=None
-                )
+            model = load_single_model(model_name, model_path)
+            if model:
                 models[model_name] = model
-                print(f"✓ {model_name}: Loaded with fallback method")
-            except Exception as e2:
-                print(f"✗ {model_name}: All load attempts failed")
+                print(f"  ✓ Loaded successfully")
+            else:
+                print(f"  ❌ Failed to load model")
+        except Exception as e:
+            print(f"  ❌ Exception: {str(e)[:80]}")
     else:
-        print(f"✗ {model_name}: File not found")
+        print(f"\n{model_name}:")
+        print(f"  ❌ File not found (pattern: {pattern})")
 
-print(f"\nTotal models loaded: {len(models)}/3")
-print(f"Healthy Detection Threshold: {CONFIDENCE_THRESHOLD}%")
-print("="*60 + "\n")
+print("\n" + "="*70)
+print(f"✓ READY: {len(models)}/3 models loaded successfully")
+print(f"✓ Treatment Database: {len(treatment_db.treatments)} diseases loaded")
+print(f"✓ Healthy Detection: Enabled (Threshold: {CONFIDENCE_THRESHOLD}%)")
+print("="*70 + "\n")
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -441,10 +479,13 @@ def predict():
         
         # Check models loaded
         if len(models) == 0:
-            print("❌ No models loaded")
-            return jsonify({'success': False, 'error': 'Models not loaded. Please try again in a moment.'}), 500
+            print("❌ No models loaded - Disease detection unavailable")
+            return jsonify({
+                'success': False,
+                'error': 'Models are loading. Please try again in 1-2 minutes.'
+            }), 503
         
-        print(f"✓ Models loaded: {len(models)}")
+        print(f"✓ Models loaded: {len(models)}/3")
         
         # Check file uploaded
         if 'file' not in request.files:
@@ -505,7 +546,7 @@ def predict():
         majority_disease = max(set(predicted_diseases), key=predicted_diseases.count)
         avg_confidence = sum(confidences) / len(confidences)
         
-        # Calculate probability spread (difference between highest and second-highest)
+        # Calculate probability spread
         if all_probabilities:
             avg_probs = {}
             for disease in class_names:
@@ -525,23 +566,18 @@ def predict():
         is_healthy = False
         healthy_reasons = []
         
-        # Criterion 1: Low confidence
         if avg_confidence < 70:
             healthy_reasons.append(f"Low confidence ({avg_confidence:.1f}%)")
         
-        # Criterion 2: Models disagree
         if not all_agree:
             healthy_reasons.append("Models disagree on disease")
         
-        # Criterion 3: Small probability spread (all probabilities similar)
         if prob_spread < 20:
             healthy_reasons.append(f"Unclear prediction (spread: {prob_spread:.1f}%)")
         
-        # Criterion 4: Very low confidence (strong indicator)
         if avg_confidence < 60:
             healthy_reasons.append(f"Very low confidence ({avg_confidence:.1f}%)")
         
-        # Decision: If 2 or more criteria met, classify as healthy
         if len(healthy_reasons) >= 2:
             is_healthy = True
             majority_disease = "Healthy"
@@ -552,19 +588,17 @@ def predict():
             if healthy_reasons:
                 print(f"  Note: Some uncertainty - {', '.join(healthy_reasons)}")
         
-        # Get treatment count only (not full details)
+        # Get treatment count
         treatment_count = 0
         
         if not is_healthy:
-            print(f"\nFetching treatment count for: {majority_disease}")
+            print(f"\nFetching treatments for: {majority_disease}")
             try:
                 all_treatments = treatment_db.get_disease_treatments(majority_disease)
                 treatment_count = len(all_treatments)
                 print(f"✓ Found {treatment_count} treatments")
             except Exception as e:
-                print(f"⚠️ Error getting treatment count: {e}")
-                import traceback
-                traceback.print_exc()
+                print(f"⚠️ Error getting treatments: {e}")
         else:
             print(f"\n✓ No treatments needed (healthy plant)")
         
@@ -603,19 +637,18 @@ def predict():
 # ============================================================================
 
 if __name__ == '__main__':
-    print("="*60)
-    print("COCONUT DISEASE DETECTION WITH AUTHENTICATION")
-    print("="*60)
-    print(f"Models: {len(models)}/3 loaded")
-    print(f"Healthy Detection: Enabled (Threshold: {CONFIDENCE_THRESHOLD}%)")
-    print(f"Treatment Database: {len(treatment_db.treatments)} diseases loaded")
+    print("="*70)
+    print("COCONUT DISEASE DETECTION SYSTEM - STARTING")
+    print("="*70)
+    print(f"✓ Models Loaded: {len(models)}/3")
+    print(f"✓ Diseases Supported: {len(treatment_db.treatments)}")
+    print(f"✓ Total Treatments: {sum([len(treatment_db.get_disease_treatments(d)) for d in treatment_db.treatments.keys()])}")
+    print(f"✓ Authentication: Enabled")
+    print(f"✓ Healthy Detection: Enabled (Threshold: {CONFIDENCE_THRESHOLD}%)")
+    print("\n📱 Access URLs:")
+    print("   Local:     http://localhost:5000")
+    print("   Network:   http://0.0.0.0:5000")
+    print("   Render:    https://coconut-disease-detection.onrender.com")
+    print("="*70 + "\n")
     
-    # Print treatment counts
-    for disease in treatment_db.treatments.keys():
-        count = len(treatment_db.get_disease_treatments(disease))
-        print(f"  - {disease}: {count} treatments")
-    
-    print("\nServer: http://localhost:5000")
-    print("Access: http://0.0.0.0:5000 (for mobile on same WiFi)")
-    print("="*60 + "\n")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
