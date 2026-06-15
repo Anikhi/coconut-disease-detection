@@ -10,6 +10,8 @@ import sqlite3
 import hashlib
 from datetime import datetime
 import secrets
+import gdown
+import os
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
@@ -73,30 +75,66 @@ class_names = ['Bud Root Dropping', 'Bud Rot', 'Gray Leaf Spot', 'Leaf Rot', 'St
 # ★★★ CONFIDENCE THRESHOLD FOR HEALTHY DETECTION ★★★
 CONFIDENCE_THRESHOLD = 80.0  # If confidence < 80%, classify as healthy
 
-# Load all models
-models = {}
+# ============================================================================
+# GOOGLE DRIVE MODEL LOADING
+# ============================================================================
+
+# Google Drive folder ID with trained models
+GDRIVE_FOLDER_ID = "19rtTUFf8BmbKyqaKxtr8QsvnYbhHIZ1D"
+
+# Where models are stored
+MODELS_DIR = "../models/saved_models"
+os.makedirs(MODELS_DIR, exist_ok=True)
+
+print("\n" + "="*60)
+print("LOADING MODELS FROM GOOGLE DRIVE")
+print("="*60)
+
+# Model file patterns
 model_patterns = {
     'MobileNetV2': 'mobilenet_best_*.h5',
     'DenseNet121': 'densenet121_best_*.h5',
     'Custom CNN': 'custom_cnn_best_*.h5'
 }
 
-print("\n" + "="*60)
-print("LOADING MODELS")
-print("="*60)
+# Count existing models
+existing_models = 0
+for pattern in model_patterns.values():
+    existing_models += len(list(Path(MODELS_DIR).glob(pattern)))
 
+# If models not found locally, download from Google Drive
+if existing_models < 3:
+    print(f"Found {existing_models}/3 models locally. Downloading from Google Drive...")
+    try:
+        print(f"Downloading from folder ID: {GDRIVE_FOLDER_ID}")
+        gdown.download_folder(id=GDRIVE_FOLDER_ID, output=MODELS_DIR, quiet=False)
+        print("✓ Models downloaded successfully!")
+    except Exception as e:
+        print(f"⚠️ Error downloading models: {e}")
+        print("⚠️ Models may not be available. App will continue without disease detection.")
+else:
+    print(f"✓ All {existing_models} models found locally")
+
+# Load all models
+models = {}
 for model_name, pattern in model_patterns.items():
-    model_files = list(Path("../models/saved_models").glob(pattern))
+    model_files = list(Path(MODELS_DIR).glob(pattern))
     if model_files:
         try:
             models[model_name] = keras.models.load_model(model_files[0])
-            print(f"✓ {model_name}")
+            print(f"✓ {model_name}: Loaded successfully")
         except Exception as e:
-            print(f"✗ {model_name}: {e}")
+            print(f"✗ {model_name}: Failed to load - {e}")
+    else:
+        print(f"✗ {model_name}: File not found")
 
-print(f"Total models: {len(models)}")
+print(f"\nTotal models loaded: {len(models)}/3")
 print(f"Healthy Detection Threshold: {CONFIDENCE_THRESHOLD}%")
 print("="*60 + "\n")
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
 
 def hash_password(password):
     """Hash password using SHA256"""
@@ -387,7 +425,7 @@ def predict():
         # Check models loaded
         if len(models) == 0:
             print("❌ No models loaded")
-            return jsonify({'success': False, 'error': 'No models loaded'}), 500
+            return jsonify({'success': False, 'error': 'Models not loaded. Please try again in a moment.'}), 500
         
         print(f"✓ Models loaded: {len(models)}")
         
@@ -551,7 +589,7 @@ if __name__ == '__main__':
     print("="*60)
     print("COCONUT DISEASE DETECTION WITH AUTHENTICATION")
     print("="*60)
-    print(f"Models: {len(models)}")
+    print(f"Models: {len(models)}/3 loaded")
     print(f"Healthy Detection: Enabled (Threshold: {CONFIDENCE_THRESHOLD}%)")
     print(f"Treatment Database: {len(treatment_db.treatments)} diseases loaded")
     
