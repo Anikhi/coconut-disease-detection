@@ -1,6 +1,6 @@
-
 import tensorflow as tf
 from tensorflow import keras
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import numpy as np
 import cv2
 import json
@@ -11,7 +11,7 @@ import hashlib
 from datetime import datetime
 import secrets
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 
 # Add parent directory to path
@@ -547,7 +547,7 @@ def predict():
 # SERVER START
 # ============================================================================
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     print("="*60)
     print("COCONUT DISEASE DETECTION WITH AUTHENTICATION")
     print("="*60)
