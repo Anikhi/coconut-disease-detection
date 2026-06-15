@@ -76,7 +76,7 @@ class_names = ['Bud Root Dropping', 'Bud Rot', 'Gray Leaf Spot', 'Leaf Rot', 'St
 CONFIDENCE_THRESHOLD = 80.0  # If confidence < 80%, classify as healthy
 
 # ============================================================================
-# GOOGLE DRIVE MODEL LOADING
+# GOOGLE DRIVE MODEL LOADING WITH KERAS COMPATIBILITY FIX
 # ============================================================================
 
 # Google Drive folder ID with trained models
@@ -115,16 +115,33 @@ if existing_models < 3:
 else:
     print(f"✓ All {existing_models} models found locally")
 
-# Load all models
+# Load all models with Keras compatibility handling
 models = {}
 for model_name, pattern in model_patterns.items():
     model_files = list(Path(MODELS_DIR).glob(pattern))
     if model_files:
         try:
-            models[model_name] = keras.models.load_model(model_files[0])
+            # Try loading with safe_mode=False to handle Keras version differences
+            try:
+                model = keras.models.load_model(model_files[0], safe_mode=False)
+            except TypeError:
+                # Fallback if safe_mode parameter doesn't exist
+                model = keras.models.load_model(model_files[0])
+            
+            models[model_name] = model
             print(f"✓ {model_name}: Loaded successfully")
         except Exception as e:
-            print(f"✗ {model_name}: Failed to load - {e}")
+            print(f"✗ {model_name}: Failed to load - {str(e)[:100]}")
+            try:
+                # Last resort: try custom_objects parameter
+                model = keras.models.load_model(
+                    model_files[0],
+                    custom_objects=None
+                )
+                models[model_name] = model
+                print(f"✓ {model_name}: Loaded with fallback method")
+            except Exception as e2:
+                print(f"✗ {model_name}: All load attempts failed")
     else:
         print(f"✗ {model_name}: File not found")
 
