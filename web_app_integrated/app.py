@@ -5,14 +5,23 @@ import numpy as np
 import cv2
 import json
 from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODEL_DIR = BASE_DIR / "models" / "saved_models"
+
 from PIL import Image
 import sqlite3
 import hashlib
 from datetime import datetime
 import secrets
 
+import os    # Add
+import gdown # Add
+
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "coconut-disease-detection-secret"
+)
 
 # Add parent directory to path
 import sys
@@ -72,6 +81,57 @@ class_names = ['Bud Root Dropping', 'Bud Rot', 'Gray Leaf Spot', 'Leaf Rot', 'St
 
 # ★★★ CONFIDENCE THRESHOLD FOR HEALTHY DETECTION ★★★
 CONFIDENCE_THRESHOLD = 80.0  # If confidence < 80%, classify as healthy
+def download_models():
+    """Download models from Google Drive if missing"""
+
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+
+    models = {
+        "mobilenet_best_20260217_125026.h5":
+            "1BFeq3AKqSiOHAOAtjrbqkJ-ctq4Yd0n_",
+
+        "densenet121_best_20260214_202955.h5":
+            "1xjONe_G-hjUM4-Mc9Pu6VNUViQu83gD4",
+
+        "custom_cnn_best_20260217_141126.h5":
+            "1GSYa_UQmkmcEcHz9zqjGDPoPrDv1UjR1"
+    }
+
+    print("\nChecking model files...")
+
+    for filename, file_id in models.items():
+
+        filepath = MODEL_DIR / filename
+
+        if not filepath.exists():
+
+            print(f"Downloading {filename}...")
+
+            url = f"https://drive.google.com/uc?id={file_id}"
+
+            try:
+                result = gdown.download(
+                url=url,
+                output=str(filepath),
+                quiet=False,
+                fuzzy=True
+            )
+
+                if result is None:
+                    raise Exception(f"Failed to download {filename}")
+
+                if filepath.exists():
+                        print(f"✓ Downloaded {filename}")
+                else:
+                        print(f"✗ Download failed: {filename}")
+
+            except Exception as e:
+                print(f"✗ Error downloading {filename}: {e}")
+                raise
+        else:
+            print(f"✓ Already exists: {filename}")
+
+    print("All models ready.\n")
 
 # Load all models
 models = {}
@@ -85,18 +145,21 @@ print("\n" + "="*60)
 print("LOADING MODELS")
 print("="*60)
 
+download_models()
+
 for model_name, pattern in model_patterns.items():
-    model_files = list(Path("../models/saved_models").glob(pattern))
+
+    model_files = list(MODEL_DIR.glob(pattern))
+
     if model_files:
         try:
+            print(f"Loading: {model_files[0]}")
             models[model_name] = keras.models.load_model(model_files[0])
-            print(f"✓ {model_name}")
+            print(f"✓ {model_name} loaded")
         except Exception as e:
             print(f"✗ {model_name}: {e}")
-
-print(f"Total models: {len(models)}")
-print(f"Healthy Detection Threshold: {CONFIDENCE_THRESHOLD}%")
-print("="*60 + "\n")
+    else:
+        print(f"✗ No file found for {model_name}")
 
 def hash_password(password):
     """Hash password using SHA256"""
@@ -554,13 +617,18 @@ if __name__ == '__main__':
     print(f"Models: {len(models)}")
     print(f"Healthy Detection: Enabled (Threshold: {CONFIDENCE_THRESHOLD}%)")
     print(f"Treatment Database: {len(treatment_db.treatments)} diseases loaded")
-    
-    # Print treatment counts
+
     for disease in treatment_db.treatments.keys():
         count = len(treatment_db.get_disease_treatments(disease))
         print(f"  - {disease}: {count} treatments")
-    
-    print("\nServer: http://localhost:5000")
-    print("Access: http://0.0.0.0:5000 (for mobile on same WiFi)")
+
+    port = int(os.environ.get("PORT", 5000))
+
+    print(f"\nServer running on port {port}")
     print("="*60 + "\n")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+    app.run(
+        host='0.0.0.0',
+        port=port,
+        debug=False
+    )
